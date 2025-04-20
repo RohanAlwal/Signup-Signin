@@ -13,6 +13,7 @@ const registerUser = async(req, res) => {
         res.status(201).json({message:"User Registered Successfully!"});
 
     } catch(err){
+        console.error("Error in registerUser:", err);
         res.status(500).json({error:true, message:"Server Error!"});
     }
 };
@@ -23,7 +24,7 @@ const loginUser = async(req, res) => {
         const user = await User.findOne({email});
         if(!user) return res.status(400).json({message:"Invalid Credentials!"});
         const isMatch = await bcrypt.compare(password, user.password);
-        if(!isMatch) return res.staus(400).json({message:"Invalid Credentials!"});
+        if(!isMatch) return res.status(400).json({message:"Invalid Credentials!"});
         const token = jwt.sign({id:user._id}, process.env.JWT_SECRET, {expiresIn : '1h'});
         res.json({token, user: {id:user._id, username:user.username, email:user.email}});
     } catch(err){
