@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import '../App.css';
-import './AuthForm.css'
+import './AuthForm.css';
 
 export default function AuthForm({ isSignIn }) {
   const [form, setForm] = useState({ email: '', password: '', username: '' });
@@ -27,7 +27,11 @@ export default function AuthForm({ isSignIn }) {
         ? { email: form.email, password: form.password }
         : form;
 
-      const { data } = await axios.post(`http://localhost:3000/api/auth${endpoint}`, payload);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/auth${endpoint}`,
+        payload
+      );
+
       showToast(data.message || 'Success');
     } catch (err) {
       showToast(err.response?.data?.message || 'Something went wrong!', 'error');
@@ -43,6 +47,7 @@ export default function AuthForm({ isSignIn }) {
           {toast.msg}
         </div>
       )}
+
       <form onSubmit={handleSubmit} className="form-body">
         {!isSignIn && (
           <input
@@ -55,6 +60,7 @@ export default function AuthForm({ isSignIn }) {
             required
           />
         )}
+
         <div className="tooltip-container">
           <input
             type="email"
@@ -67,6 +73,7 @@ export default function AuthForm({ isSignIn }) {
           />
           <span className="tooltip">Enter a valid email 📩</span>
         </div>
+
         <div className="tooltip-container relative">
           <input
             type={showPassword ? 'text' : 'password'}
@@ -86,6 +93,7 @@ export default function AuthForm({ isSignIn }) {
           </button>
           <span className="tooltip">Strong password = 💪</span>
         </div>
+
         <button type="submit" className="submit-btn" disabled={loading}>
           {loading ? <span className="loader"></span> : (isSignIn ? 'Sign In' : 'Sign Up')}
         </button>
