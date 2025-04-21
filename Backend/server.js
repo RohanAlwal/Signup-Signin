@@ -10,7 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 connectDB();
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: 'https://signup-signin-rho.vercel.app/' }));
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
